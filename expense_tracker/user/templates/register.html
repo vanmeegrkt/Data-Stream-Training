@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | Expense Tracker</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .title {
+            font-size: 2rem;
+            text-align: center;
+            color: #2d87f0;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #555;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        form p {
+            margin-bottom: 1rem;
+        }
+
+        button {
+            padding: 0.7rem;
+            background-color: #2d87f0;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #1c66c7;
+        }
+        a {
+            text-align: center;
+            margin-top: 1rem;
+            display: block;
+            color: #2d87f0;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="title">EXPENSE TRACKER APP</div>
+        <div class="subtitle">Create a new account</div>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Register</button>
+        </form>
+        <a href="../login/">Already an user? Login here</a>
+    </div>
+</body>
+</html>

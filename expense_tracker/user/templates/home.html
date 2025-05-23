@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | Expense Tracker</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 2rem;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 2rem;
+            color: #2d87f0;
+            margin-bottom: 2rem;
+        }
+
+        .nav-links {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .nav-links a {
+            margin: 0 1rem;
+            color: #2d87f0;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+
+        .card {
+            background: #fff;
+            padding: 1.5rem 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+
+        h3, h4 {
+            color: #2d87f0;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .form-group {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .form-actions {
+            margin-top: 1rem;
+        }
+
+        button {
+            padding: 0.6rem 1.2rem;
+            background-color: #2d87f0;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 1rem;
+        }
+
+        button:hover {
+            background-color: #1c66c7;
+        }
+
+        a.button-link {
+            padding: 0.6rem 1.2rem;
+            color: #2d87f0;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f0f0f0;
+        }
+
+        img {
+            max-width: 100%;
+            margin-top: 1rem;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        ul {
+            padding-left: 1.2rem;
+        }
+
+        .message {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 class="title">EXPENSE TRACKER APP</h1>
+
+    <div class="nav-links">
+        <a href="../logout/">Logout</a>
+        <a href="../budgets/budget/">Budget</a>
+        <a href="../expenses/expense/">Create An Expense</a>
+        <a href="../expenses/edit">Edit Expenses</a>
+        <a href="../expenses/delete">Delete Expenses</a>
+    </div>
+
+    <div class="card">
+        <p><strong>Expenses</strong></p>
+        <p>{{limit_message}}</p>
+        <p>{{budget_message}}</p>
+    </div>
+
+    <div class="card">
+        <h3>Filter Expenses</h3>
+        <form method="get" class="filter-form">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="id_category">Category:</label>
+                    {{ filter_form.category }}
+                </div>
+                <div class="form-group">
+                    <label for="id_date">From:</label>
+                    {{ filter_form.date }}
+                </div>
+                <div class="form-group">
+                    <label for="id_description">Description:</label>
+                    {{ filter_form.description }}
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit">Apply Filters</button>
+                <a href="{% url 'home' %}" class="button-link">Clear Filters</a>
+            </div>
+        </form>
+    </div>
+
+    {% if active_filters %}
+    <div class="card">
+        <h4>Active Filters:</h4>
+        <ul>
+            {% if active_filters.category %}
+            <li>Category: {{ active_filters.category }}</li>
+            {% endif %}
+            {% if active_filters.date %}
+            <li>From: {{ active_filters.date }}</li>
+            {% endif %}
+            {% if active_filters.description %}
+            <li>Description contains: "{{ active_filters.description }}"</li>
+            {% endif %}
+        </ul>
+    </div>
+    {% endif %}
+
+    {% if expenses_count %}
+    <div class="card">
+        <p><strong>Showing {{ expenses_count }} expense(s) with total amount: Rs. {{ total_filtered_amount }}</strong></p>
+    </div>
+    {% endif %}
+
+    {% if recent_expenses %}
+    <div class="card">
+        <h3>Expenses {% if active_filters %}(Filtered){% else %}(Recent){% endif %}</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for expense in recent_expenses %}
+                <tr>
+                    <td>{{ expense.date }}</td>
+                    <td>{{ expense.category }}</td>
+                    <td>{{ expense.description|default:"No description" }}</td>
+                    <td>Rs. {{ expense.amount }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="message">No expenses found matching your filters.</p>
+    {% endif %}
+
+    {% if chart or chart_1 %}
+    <div class="card">
+        <h3>Visual Summary</h3>
+        {% if chart %}<img src="data:image/png;base64,{{ chart }}">{% endif %}
+        {% if chart_1 %}<img src="data:image/png;base64,{{ chart_1 }}">{% endif %}
+    </div>
+    {% endif %}
+
+</body>
+</html>
