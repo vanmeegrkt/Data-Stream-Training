@@ -1,0 +1,7 @@
+<!-- templates/contact.html -->
+ <h2>Contact Form</h2>
+ <Form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="send">
+ </Form>
