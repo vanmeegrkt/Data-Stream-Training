@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Expense</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .title {
+            font-size: 2rem;
+            text-align: center;
+            color: #2d87f0;
+            margin-bottom: 1rem;
+        }
+
+        form {
+            margin-top: 1rem;
+        }
+
+        form p {
+            margin-bottom: 1rem;
+        }
+
+        button {
+            padding: 0.7rem 1.2rem;
+            background-color: #2d87f0;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #1c66c7;
+        }
+
+        .links {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .links a {
+            margin: 0 1rem;
+            color: #2d87f0;
+            text-decoration: none;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="title">EXPENSE TRACKER APP</div>
+        <h2 style="text-align:center;">Edit Expense</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Submit</button>
+        </form>
+        <div class="links">
+            <a href="../../home/">Home</a>
+            <a href="../../logout/">Logout</a>
+            <a href="../../expenses/expense/">Add Expense</a>
+        </div>
+    </div>
+</body>
+</html>
